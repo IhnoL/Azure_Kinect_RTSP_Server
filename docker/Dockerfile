@@ -7,7 +7,8 @@ apt-get install -y libgstreamer1.0-0 gstreamer1.0-plugins-base \
  gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly \
  gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x \
  gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio \
- gstreamer1.0-rtsp
+ gstreamer1.0-rtsp \ 
+ va-driver-all gstreamer1.0-vaapi
 
 FROM dependencies as rtsp-server
 
@@ -55,7 +56,7 @@ RUN tar -C / -xvf aivero_rgbd_toolkit_2.0.0_x86_64.tar.bz2
 
 FROM aivero-rgbd-toolkit as kinect-rtsp-streamer
 
-WORKDIR /opt/aivero/rgbd_toolkit
+WORKDIR /opt/aivero/rgbd_toolkit_x86_64
 COPY docker/aivero_environment.sh .
 RUN chmod +x ./aivero_environment.sh
 
