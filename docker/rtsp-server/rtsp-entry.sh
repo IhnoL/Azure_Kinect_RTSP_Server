@@ -50,10 +50,23 @@ framerate=15fps rectify-depth=true timestamp_mode=clock_all \
 ! vaapih264enc quality-level=4 ! video/x-h264, profile=baseline \
 ! h264parse ! rtph264pay name=pay0 pt=96 \
 demux.src_depth ! colorizer near-cut=2 far-cut=3 \
-! videobox ! queue ! videoconvert
+! videobox ! queue ! videoconvert \
 ! mix.)" "/kinect"
 
+# maybe a bit more speed
 #vaapih264enc quality-level=7 cpb-length=1 default-roi-delta-qp=10
+
+# Uses rtsp-simple-server instead of buildin
+# gst-launch-1.0 \
+# k4asrc timestamp-mode=clock_all enable_color=true color-format=nv12 color-resolution=720p depth-mode=nfov_unbinned \
+# framerate=15fps rectify-depth=true timestamp_mode=clock_all \
+# ! queue ! rgbddemux name=demux demux.src_color ! queue ! videoconvert \
+# ! videobox ! videomixer name=mix sink_0::xpos=0 sink_1::xpos=1280 \
+# ! vaapih264enc quality-level=4 ! video/x-h264, profile=baseline \
+# ! rtspclientsink location=rtsp://rtsp-simple-server:8554/kinect \
+# demux.src_depth ! colorizer near-cut=2 far-cut=3 \
+# ! videobox ! queue ! videoconvert \
+# ! mix.
 
 # no colorizer (grey)
 # ./stream "( k4asrc timestamp-mode=clock_all enable_color=true color-format=nv12 color-resolution=720p depth-mode=nfov_unbinned \
@@ -67,6 +80,5 @@ demux.src_depth ! colorizer near-cut=2 far-cut=3 \
 # ! mix.)" "/kinect"
 
 
-#you can test with encodebin for even more fast speed by native encodeing (currently not working):
-#./stream "( k4asrc timestamp-mode=clock_all enable_color=true ! queue ! rgbddemux name=demux demux.src_color ! queue ! videoconvert ! encodebin )" "/test"
+# There are lots of opzimization parameters for more speed. E.g:
 #realtime: https://stackoverflow.com/questions/30730082/realtime-zero-latency-video-stream-what-codec-parameters-to-use
